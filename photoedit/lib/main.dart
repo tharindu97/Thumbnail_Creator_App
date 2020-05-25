@@ -64,69 +64,125 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Image.asset('image/SM.png', height: 70,),
-            SizedBox(height: 12,),
-            Image.asset('image/Sample.png', height: 70,),
-            RepaintBoundary(
-              key: globalKey,
-              child: Stack(
-                children: <Widget>[
-                  _image != null ? Image.file(_image, height: 300,) : Container(),
-                  Container(
-                    height: 300,
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Column(
-                      children: <Widget>[
-                        Text(headerText),
-                        Spacer(),
-                        Text(footerText)
-                      ],
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Image.asset('image/SM.png', height: 70,),
+              SizedBox(height: 12,),
+              Image.asset('image/Sample.png', height: 200,),
+              SizedBox(height: 30,),
+              RepaintBoundary(
+                key: globalKey,
+                child: Stack(
+                  children: <Widget>[
+                    _image != null ? Image.file(
+                      _image, 
+                      height: 300,
+                      fit: BoxFit.fitHeight,
+                      ) : Container(),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 300,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Text(headerText.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 26,
+                                shadows: <Shadow>[
+                                    Shadow(
+                                      offset: Offset(2.0, 2.0),
+                                      blurRadius: 3.0,
+                                      color: Colors.black87,
+                                    ),
+                                    Shadow(
+                                      offset: Offset(2.0, 2.0),
+                                      blurRadius: 8.0,
+                                      color: Colors.black87,
+                                    ),
+                                  ],
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Text(footerText.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 26,
+                                shadows: <Shadow>[
+                                    Shadow(
+                                      offset: Offset(2.0, 2.0),
+                                      blurRadius: 3.0,
+                                      color: Colors.black87,
+                                    ),
+                                    Shadow(
+                                      offset: Offset(2.0, 2.0),
+                                      blurRadius: 8.0,
+                                      color: Colors.black87,
+                                    ),
+                                  ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 20,),
+              imageSelected ? Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      onChanged: (val){
+                        setState(() {
+                          headerText = val;
+                        });
+                      },
+                      decoration:  InputDecoration(
+                        hintText: "Header Text"
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 20,),
-            imageSelected ? Column(
-              children: <Widget>[
-                TextField(
-                  onChanged: (val){
-                    setState(() {
-                      headerText = val;
-                    });
-                  },
-                  decoration:  InputDecoration(
-                    hintText: "Header Text"
-                  ),
+                    SizedBox(height: 20,),
+                    TextField(
+                      onChanged: (val){
+                        setState(() {
+                          footerText = val;
+                        });
+                      },
+                      decoration:  InputDecoration(
+                        hintText: "Footer Text"
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: (){
+                        
+                        takeScreenshot();
+                      },
+                      child: Text('Save'),
+                    )
+                  ],
                 ),
-                SizedBox(height: 12,),
-                TextField(
-                  onChanged: (val){
-                    setState(() {
-                      footerText = val;
-                    });
-                  },
-                  decoration:  InputDecoration(
-                    hintText: "Footer Text"
-                  ),
+              ) : Container(
+                child: Center(
+                  child: Text('Select image to get started'),
                 ),
-                RaisedButton(
-                  onPressed: (){
-                    
-                    takeScreenshot();
-                  },
-                  child: Text('Save'),
-                )
-              ],
-            ) : Container(
-              child: Center(
-                child: Text('Select image to get started'),
               ),
-            ),
-          ],
+              _imageFile != null ? Image.file(_imageFile) : Container(),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -139,8 +195,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   takeScreenshot() async{
-    RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
     final directory = (await getApplicationDocumentsDirectory()).path;
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -151,7 +206,6 @@ class _HomePageState extends State<HomePage> {
       _imageFile = imgFile;
     });
     _savefile( _imageFile);
-    //saveFileLocal();
     imgFile.writeAsBytes(pngBytes);
   }
   _savefile(File file) async {
@@ -165,4 +219,4 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// 27 13
+// 31
