@@ -68,9 +68,9 @@ class _HomePageState extends State<HomePage> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Image.asset('image/SM.png', height: 70,),
-              SizedBox(height: 12,),
-              Image.asset('image/Sample.png', height: 200,),
+              
+              SizedBox(height: 100,),
+              Image.asset('image/UU.png',width: 300,),
               SizedBox(height: 30,),
               RepaintBoundary(
                 key: globalKey,
@@ -166,13 +166,24 @@ class _HomePageState extends State<HomePage> {
                         hintText: "Footer Text"
                       ),
                     ),
-                    RaisedButton(
-                      onPressed: (){
-                        
-                        takeScreenshot();
-                      },
-                      child: Text('Save'),
-                    )
+                    SizedBox(height: 20,),
+                    SizedBox(
+                      width: 300,
+                      height: 40,
+                      child: RaisedButton.icon(
+                          icon: Icon(Icons.save),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                          elevation: 10,
+                          highlightElevation: 10,
+                          color: Colors.blue,
+                          textColor: Colors.white, 
+                          onPressed: () {
+                            takeScreenshot();
+                          },
+                          label: Text("Save", style: TextStyle(fontSize: 20),),
+                        )
+                    ),
+                    SizedBox(height: 20,),
                   ],
                 ),
               ) : Container(
@@ -218,5 +229,3 @@ class _HomePageState extends State<HomePage> {
       Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.photos]);
   }
 }
-
-// 31
